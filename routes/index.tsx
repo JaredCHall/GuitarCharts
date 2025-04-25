@@ -1,4 +1,5 @@
 import {FingeringChart} from "../components/FingeringChart.tsx";
+import CircleOfFifths from "../components/CircleOfFifths.tsx";
 
 export default function Home() {
   return (
@@ -25,7 +26,7 @@ export default function Home() {
           <h1 className="text-4xl font-bold text-center mb-4">Guitar Charts!</h1>
 
           <div className="bg-gray-800 p-6 rounded shadow text-center">
-            <FingeringChart />
+            <CircleOfFifths />
           </div>
 
           <div className="mt-4">
