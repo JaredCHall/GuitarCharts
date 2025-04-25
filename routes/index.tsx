@@ -1,25 +1,37 @@
-import { useSignal } from "@preact/signals";
-import Counter from "../islands/Counter.tsx";
+import {FingeringChart} from "../components/FingeringChart.tsx";
 
 export default function Home() {
-  const count = useSignal(3);
   return (
-    <div class="px-4 py-8 mx-auto bg-[#86efac]">
-      <div class="max-w-screen-md mx-auto flex flex-col items-center justify-center">
-        <img
-          class="my-6"
-          src="/logo.svg"
-          width="128"
-          height="128"
-          alt="the Fresh logo: a sliced lemon dripping with juice"
-        />
-        <h1 class="text-4xl font-bold">Welcome to Fresh</h1>
-        <p class="my-4">
-          Try updating this message in the
-          <code class="mx-2">./routes/index.tsx</code> file, and refresh.
-        </p>
-        <Counter count={count} />
+
+      <div className="min-h-screen flex bg-green-200">
+
+        <aside className="w-48 bg-white shadow-md p-4 space-y-2">
+          <h2 className="text-lg font-bold mb-2">Scales</h2>
+          <ul className="space-y-1">
+            {["C", "C♯/D♭", "D", "D♯/E♭", "E", "F", "F♯/G♭", "G", "G♯/A♭", "A", "A♯/B♭", "B"].map((note) => (
+                <li>
+                  <button className="w-full text-left px-2 py-1 rounded hover:bg-gray-200">
+                    {note}
+                  </button>
+                </li>
+            ))}
+          </ul>
+        </aside>
+
+        <main class="flex-1 p-6">
+          <img src="/logo.png" alt="Guitar Charts logo" className="w-28 mx-auto mb-1 rotate-90"/>
+          <h1 class="text-4xl font-bold text-center mb-4">Guitar Charts!</h1>
+          <div class="bg-white p-6 rounded shadow text-center">
+            <FingeringChart/>
+          </div>
+          <div class="mt-4">
+            <label class="inline-flex items-center">
+              <input type="checkbox" class="form-checkbox" />
+              <span class="ml-2">Show Intervals</span>
+            </label>
+          </div>
+        </main>
       </div>
-    </div>
-  );
-}
+
+        );
+        }
