@@ -3,6 +3,18 @@ import {ScaleMode} from "./ScaleModeInterface.ts";
 
 export class MinorPentatonic implements ScaleMode {
 
+  name(): string {
+    return 'Minor Pentatonic'
+  }
+
+  type(): 'major'|'minor' {
+    return 'minor'
+  }
+
+  pattern(): number[] {
+    return [3, 2, 2, 3, 2];
+  }
+
   charlie(): CagedPosition {
     return [
       [null, '4', null, '5', null],

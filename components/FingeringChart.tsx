@@ -10,7 +10,6 @@ interface FingeringChartProps extends JSX.HTMLAttributes<HTMLDivElement> {
 
 const cageFinder = new CagePositionFinder();
 
-
 const topOffset = 24; // Extra vertical space for fret numbers
 const strings = 6;
 const frets = 5;
@@ -33,8 +32,10 @@ const silver = "#c0c0c0";
 export function FingeringChart(props: FingeringChartProps) {
 
   const cagedNotes = cageFinder.getScale(props.mode, props.position);
-  const startFret = cageFinder.getStartFret(props.position,props.keyName,cagedNotes)
+  const scaleNotes = cageFinder.buildScale(props.keyName, props.mode)
+  const startFret = cageFinder.getStartFret(props.keyName, cagedNotes)
 
+  console.log(props.labelMode);
 
   return (
         <svg
@@ -138,11 +139,25 @@ export function FingeringChart(props: FingeringChartProps) {
                           x={x - 3.5 * note.interval.length}
                           y={y + 6}
                           textAnchor="middle"
+                          dominantBaseline="middle"
                           fontSize="10"
                           fontWeight="bold"
                           fill="black"
                       >
                         {note.interval}
+                      </text>
+                  )}
+                  {props.labelMode === "notes" && (
+                      <text
+                          x={x - 8}
+                          y={y + 6}
+                          fontSize="10"
+                          fontWeight="bold"
+                          fill="black"
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                      >
+                        {scaleNotes[note.getIntervalIndex()]}
                       </text>
                   )}
                 </g>

@@ -1,7 +1,19 @@
 import {CagedPosition} from "$classes/types.ts";
 import {ScaleMode} from "./ScaleModeInterface.ts";
 
-export class Ionian implements ScaleMode {
+export class NaturalMinor implements ScaleMode {
+
+  name(): string {
+    return 'Natural Minor'
+  }
+
+  type(): 'major'|'minor' {
+    return 'minor'
+  }
+
+  pattern(): number[] {
+    return [2, 1, 2, 2, 1, 2, 2];
+  }
 
   charlie(): CagedPosition {
     return [

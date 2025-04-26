@@ -1,7 +1,19 @@
 import {CagedPosition} from "$classes/types.ts";
 import {ScaleMode} from "./ScaleModeInterface.ts";
 
-export class Aeolian implements ScaleMode{
+export class NaturalMajor implements ScaleMode{
+
+  name(): string {
+    return 'Major Scale'
+  }
+
+  type(): 'major'|'minor' {
+    return 'major'
+  }
+
+  pattern(): number[] {
+    return [2, 2, 1, 2, 2, 2, 1];
+  }
 
   charlie(): CagedPosition {
     return [

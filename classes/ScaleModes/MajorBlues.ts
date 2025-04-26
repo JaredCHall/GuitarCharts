@@ -3,6 +3,18 @@ import {ScaleMode} from "./ScaleModeInterface.ts";
 
 export class MajorBlues implements ScaleMode {
 
+  name(): string {
+    return 'Major Blues'
+  }
+
+  type(): 'major'|'minor' {
+    return 'major'
+  }
+
+  pattern(): number[] {
+    return [2, 3, 1, 1, 3, 2];
+  }
+
   charlie(): CagedPosition {
     return [
       ['3', null, null, '5', null],

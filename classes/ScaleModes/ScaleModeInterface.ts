@@ -6,4 +6,7 @@ export interface ScaleMode {
   golf(): CagedPosition;
   echo(): CagedPosition;
   delta(): CagedPosition;
+  name(): string;
+  pattern(): number[];
+  type(): 'major'|'minor';
 }
