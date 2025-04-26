@@ -31,6 +31,14 @@ const CircleOfFifths = () => {
       <svg width="300" height="300" viewBox="0 0 300 300" class="mx-auto">
         <circle cx={center} cy={center} r={radius} fill="none" stroke="#444" stroke-width="2" />
 
+        <image
+            href="/logo.png"
+            x={center - 60}
+            y={center - 60}
+            width="120"
+            height="120"
+        />
+
         {keys.map((key, i) => {
           const angle = angleStep * i - Math.PI / 2;
           const xOuter = center + radius * Math.cos(angle);
