@@ -6,6 +6,11 @@ interface Key {
   minor: string;
 }
 
+interface Props {
+  selectedKey: string;
+  onKeySelect: (key: string) => void;
+}
+
 const keys: Key[] = [
   { major: "C", minor: "a" },
   { major: "G", minor: "e" },
@@ -23,7 +28,7 @@ const keys: Key[] = [
   { major: "F", minor: "d" },
 ];
 
-const CircleOfFifths = () => {
+export default function CircleOfFifths({ selectedKey, onKeySelect }: Props) {
   const radius = 120;
   const center = 150;
   const angleStep = (2 * Math.PI) / keys.length;
@@ -49,18 +54,21 @@ const CircleOfFifths = () => {
           const yInner = center + (radius - 30) * Math.sin(angle);
 
           const isHovered = i === hovered;
-          const fill = isHovered ? "#1f2937" : "#111827";
-          const stroke = isHovered ? "#d1d5db" : "#6b7280";
+          const isSelected = key.major === selectedKey;
+          const fill = isSelected ? "#f59e0b" : isHovered ? "#1f2937" : "#111827";
+          const stroke = isSelected ? "#fbbf24" : isHovered ? "#d1d5db" : "#6b7280";
+          const textColor = isSelected ? "#000000" : "#f3f4f6";
 
           return (
               <g
                   key={i}
                   onMouseEnter={() => setHovered(i)}
                   onMouseLeave={() => setHovered(null)}
+                  onClick={() => onKeySelect(key.major)}
                   style={{ cursor: "pointer" }}
               >
                 <circle cx={xOuter} cy={yOuter} r={16} fill={fill} stroke={stroke} stroke-width="2" />
-                <text x={xOuter} y={yOuter + 1} text-anchor="middle" dominant-baseline="middle" fill="#f3f4f6" font-size="12" font-weight="bold">
+                <text x={xOuter} y={yOuter + 1} text-anchor="middle" dominant-baseline="middle" fill={textColor} font-size="12" font-weight="bold">
                   {key.major}
                 </text>
 
@@ -72,6 +80,4 @@ const CircleOfFifths = () => {
         })}
       </svg>
   );
-};
-
-export default CircleOfFifths;
+}
