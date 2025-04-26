@@ -1,5 +1,5 @@
 import {FingeringChart} from "../components/FingeringChart.tsx";
-import CircleOfFifths from "../components/CircleOfFifths.tsx";
+import CircleOfFifths from "../islands/CircleOfFifths.tsx";
 
 export default function Home() {
   return (
