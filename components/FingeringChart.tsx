@@ -1,4 +1,5 @@
 import { JSX } from "preact";
+import {ScaleNoteFinder} from "../classes/ScaleNoteFinder.ts";
 
 interface FingeringChartProps extends JSX.HTMLAttributes<HTMLDivElement> {
   keyName: string;
@@ -6,6 +7,9 @@ interface FingeringChartProps extends JSX.HTMLAttributes<HTMLDivElement> {
   showIntervals: boolean;
   mode: string;
 }
+
+
+const finder = new ScaleNoteFinder();
 
 const strings = 6;
 const frets = 5;
@@ -17,12 +21,6 @@ const paddedHeight = height + verticalPadding * 2;
 const stringSpacing = height / (strings - 1);
 const fretSpacing = width / frets;
 
-const frettedNotes = [
-  { string: 0, fret: 3, interval: "1" },
-  { string: 1, fret: 2, interval: "2" },
-  { string: 2, fret: 0, interval: "3" },
-];
-
 // Define exaggerated string thicknesses (low E to high E)
 const stringWidths = [10, 7, 5, 3, 2, 1];
 
@@ -32,6 +30,13 @@ const bronze = "#a57034";
 const silver = "#c0c0c0";
 
 export function FingeringChart(props: FingeringChartProps) {
+
+  const frettedNotes = finder.findNotes(props.keyName,props.mode, props.position);
+
+  // Determine the baseline fret for this chart
+  const displayedFrets = frettedNotes.map(n => n.fret);
+  const minFret = Math.min(...displayedFrets);
+
   return (
       <div className="flex flex-col items-center">
         <svg width={width} height={paddedHeight} style={{ backgroundColor: ebony }}>
@@ -69,7 +74,7 @@ export function FingeringChart(props: FingeringChartProps) {
           {/* Draw note markers */}
           {frettedNotes.map((note, i) => {
             const y = (strings - 1 - note.string) * stringSpacing + verticalPadding;
-            const x = note.fret * fretSpacing + fretSpacing / 2;
+            const x = (note.fret - minFret) * fretSpacing + fretSpacing / 2;
             const isRoot = note.interval === "1";
             const fillColor = isRoot ? "red" : "yellow";
 

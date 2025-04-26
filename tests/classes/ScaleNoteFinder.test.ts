@@ -26,43 +26,43 @@ Deno.test("G Major Blues Scale is built correctly", () => {
 
 Deno.test("Interval from C to C is 1", () => {
   const finder = new ScaleNoteFinder();
-  const interval = finder["getInterval"]([], "C", "C");
+  const interval = finder["getInterval"]("C", "C");
   assertEquals(interval, "1");
 });
 
 Deno.test("Interval from C to D is 2", () => {
   const finder = new ScaleNoteFinder();
-  const interval = finder["getInterval"]([], "C", "D");
+  const interval = finder["getInterval"]("C", "D");
   assertEquals(interval, "2");
 });
 
 Deno.test("Interval from C to E is 3", () => {
   const finder = new ScaleNoteFinder();
-  const interval = finder["getInterval"]([], "C", "E");
+  const interval = finder["getInterval"]("C", "E");
   assertEquals(interval, "3");
 });
 
 Deno.test("Interval from C to G is 5", () => {
   const finder = new ScaleNoteFinder();
-  const interval = finder["getInterval"]([], "C", "G");
+  const interval = finder["getInterval"]("C", "G");
   assertEquals(interval, "5");
 });
 
 Deno.test("Interval from A to C is ♭3", () => {
   const finder = new ScaleNoteFinder();
-  const interval = finder["getInterval"]([], "A", "C");
+  const interval = finder["getInterval"]("A", "C");
   assertEquals(interval, "♭3");
 });
 
 Deno.test("Interval from E to D is ♭7", () => {
   const finder = new ScaleNoteFinder();
-  const interval = finder["getInterval"]([], "E", "D");
+  const interval = finder["getInterval"]( "E", "D");
   assertEquals(interval, "♭7");
 });
 
 Deno.test("Interval wraps correctly from B to C", () => {
   const finder = new ScaleNoteFinder();
-  const interval = finder["getInterval"]([], "B", "C");
+  const interval = finder["getInterval"]("B", "C");
   assertEquals(interval, "♭2");
 });
 
@@ -75,7 +75,7 @@ Deno.test("C shape roots for C major", () => {
 Deno.test("A shape roots for C major", () => {
   const finder = new ScaleNoteFinder();
   const roots = finder["getCagedRootFrets"]("C", "A");
-  assertEquals(roots, [8, 3, -1, -1, -1, -1]);
+  assertEquals(roots, [-1, 3, -1, 5, -1, -1]);
 });
 
 Deno.test("G shape roots for C major", () => {
@@ -93,7 +93,7 @@ Deno.test("E shape roots for C major", () => {
 Deno.test("D shape roots for C major", () => {
   const finder = new ScaleNoteFinder();
   const roots = finder["getCagedRootFrets"]("C", "D");
-  assertEquals(roots, [-1, -1, 10, -1, 1, -1]);
+  assertEquals(roots, [-1, -1, 10, -1, 13, -1]);
 });
 
 

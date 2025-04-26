@@ -19,7 +19,7 @@ export class ScaleNoteFinder {
       const openNote = this.openStringNote(string);
       for (let fret = 0; fret <= 14; fret++) { // Maybe limit range?
         const noteName = this.getNoteName(openNote, fret);
-        const interval = this.getInterval(scaleNotes, scaleKey, noteName);
+        const interval = this.getInterval(scaleKey, noteName);
         if (scaleNotes.includes(noteName)) {
           notes.push(new ScaleNote(noteName, interval, string, fret));
         }
@@ -67,50 +67,69 @@ export class ScaleNoteFinder {
 
   private getCagedRootFrets(scaleKey: string, position: string): number[] {
     const chromatic = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-    const openStrings = ["E", "A", "D", "G", "B", "E"]; // 0-5
+    const openStrings = ["E", "A", "D", "G", "B", "E"];
 
     const cagedRootStrings: Record<string, number[]> = {
-      "C": [1, 4], // A string and B string
-      "A": [0, 1], // E string and A string
-      "G": [0, 3], // E string and G string
-      "E": [0, 5], // E string and high E string
-      "D": [2, 4], // D string and B string
+      "C": [1, 4],
+      "A": [1, 3],
+      "G": [0, 3],
+      "E": [0, 5],
+      "D": [2, 4],
+    };
+
+    const shapeTargetRanges: Record<string, [number, number]> = {
+      "C": [1, 5],
+      "A": [3, 7],
+      "G": [5, 9],
+      "E": [7, 11],
+      "D": [9, 13],
     };
 
     const importantStrings = cagedRootStrings[position];
+    const [lowTarget, highTarget] = shapeTargetRanges[position] ?? [0, 12];
+
     if (!importantStrings) {
       throw new Error(`Unknown CAGED position: ${position}`);
     }
 
-    const rootFrets = [];
+    const rootFrets: number[] = [];
 
     for (let string = 0; string < 6; string++) {
+      if (!importantStrings.includes(string)) {
+        rootFrets.push(-1);
+        continue;
+      }
+
       const openNote = openStrings[string];
       const openIndex = chromatic.indexOf(openNote);
       const rootIndex = chromatic.indexOf(scaleKey);
 
       if (openIndex === -1 || rootIndex === -1) {
-        throw new Error(`Unknown note in tuning or scale: ${openNote} / ${scaleKey}`);
+        throw new Error(`Invalid note in tuning or scale: ${openNote} / ${scaleKey}`);
       }
 
-      // Calculate how many semitones up from the open string to reach the root
-      let fret = (rootIndex - openIndex + 12) % 12;
+      const baseFret = (rootIndex - openIndex + 12) % 12;
+      const highFret = baseFret + 12;
 
-      // Now make it a "playable" fret (we can add 12 if needed for upper octave)
-      if (fret < 0) {
-        fret += 12;
-      }
-
-      // Special treatment: for important strings, we prefer low fret numbers (0-12)
-      if (importantStrings.includes(string)) {
-        rootFrets.push(fret);
+      // Prefer baseFret if it fits the target range, otherwise highFret
+      let fret = -1;
+      if (baseFret >= lowTarget && baseFret <= highTarget) {
+        fret = baseFret;
+      } else if (highFret >= lowTarget && highFret <= highTarget) {
+        fret = highFret;
       } else {
-        rootFrets.push(-1); // This string is not critical for root in this CAGED position
+        // fallback: pick whichever is closer to target window
+        const baseDist = Math.min(Math.abs(baseFret - lowTarget), Math.abs(baseFret - highTarget));
+        const highDist = Math.min(Math.abs(highFret - lowTarget), Math.abs(highFret - highTarget));
+        fret = baseDist <= highDist ? baseFret : highFret;
       }
+
+      rootFrets.push(fret);
     }
 
     return rootFrets;
   }
+
 
   private openStringNote(string: number): string {
     const openStrings = ["E", "A", "D", "G", "B", "E"];
@@ -124,7 +143,7 @@ export class ScaleNoteFinder {
     return chromatic[newIndex];
   }
 
-  private getInterval(scaleNotes: string[], root: string, note: string): string {
+  private getInterval( root: string, note: string): string {
     const chromatic = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 
     const rootIndex = chromatic.indexOf(root);
@@ -154,23 +173,39 @@ export class ScaleNoteFinder {
   }
 
 
+
   private filterByCagedPosition(notes: ScaleNote[], rootFrets: number[], position: string): ScaleNote[] {
-    // First find the minimum and maximum frets where the roots are
+
+    console.log('position: ' + position);
+    console.log(
+        notes.map(n => `(${n.string}:${n.fret} ${n.name})`).join(", ")
+    );
+
+
     const validRootFrets = rootFrets.filter(fret => fret >= 0);
+    console.log(validRootFrets)
+
     if (validRootFrets.length === 0) {
-      throw new Error(`No valid root frets found for position ${position}`);
+      throw new Error(`No root frets for position ${position}`);
     }
 
-    const minRootFret = Math.min(...validRootFrets);
-    const maxRootFret = Math.max(...validRootFrets);
+    const shapeRanges: Record<string, [number, number]> = {
+      C: [1, 2],
+      A: [1, 3],
+      G: [1, 3],
+      E: [1, 3],
+      D: [1, 3],
+    };
 
-    // Define a small window around the CAGED shape
-    const lowFret = Math.max(0, minRootFret - 2);  // don't go below open strings
-    const highFret = maxRootFret + 4;               // allow up to 4 frets higher
+    const [back, forward] = shapeRanges[position] ?? [2, 4];
 
-    return notes.filter(note => {
-      return note.fret >= lowFret && note.fret <= highFret;
-    });
+    // Anchor around the **lowest** root (reliable heuristic)
+    const anchorFret = Math.min(...validRootFrets);
+    const lowFret = Math.max(0, anchorFret - back);
+    const highFret = anchorFret + forward;
+
+    return notes.filter(note => note.fret >= lowFret && note.fret <= highFret);
   }
+
 
 }
