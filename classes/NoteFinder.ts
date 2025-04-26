@@ -48,14 +48,12 @@ export class NoteFinder {
 
   }
   private getChromaticNotesForMajorKey(key: string): string[] {
-
     switch(key){
       case 'C': case 'G': case 'D': case 'A': case 'E': case 'B': case 'F♯': return chromaticSharps
       default: return chromaticFlats;
     }
   }
   private getChromaticNotesForMinorKey(key: string): string[] {
-
     switch(key){
       case 'A': case 'E': case 'B': case 'F♯': case 'C♯': case 'G♯': case 'D♯': return chromaticSharps
       default: return chromaticFlats;
