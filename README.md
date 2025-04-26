@@ -42,6 +42,11 @@ deno task start
 ```
 Open your browser to `http://localhost:8000`
 
+### Running tests
+```bash
+deno test
+```
+
 ### Building for Production
 ```bash
 deno task build
@@ -70,6 +75,9 @@ We believe that **understanding the fretboard visually** is the key to mastering
     - Advanced scale mode library (e.g., Harmonic Minor, Melodic Minor)
     - Mobile-friendly optimizations
     - Save/share custom charts
+
+## Dev Notes
+- All note names internally use Unicode ♯ and ♭ characters. If new platforms are targeted in the future (like legacy mobile browsers), revisit rendering compatibility.
 
 ## Contributing
 
