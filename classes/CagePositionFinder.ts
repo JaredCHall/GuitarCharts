@@ -3,6 +3,48 @@ import {CagedNote} from "./CagedNote.ts";
 
 export class CagePositionFinder {
 
+  getStartFret(position: string, key: string, cagedNotes: CagedNote[]): number {
+    const stringTunings = ["E", "A", "D", "G", "B", "E"]; // Standard tuning
+
+    // Map note names to semitone numbers relative to C
+    const noteToSemitone: Record<string, number> = {
+      C: 0, "C#": 1, Db: 1,
+      D: 2, "D#": 3, Eb: 3,
+      E: 4, F: 5, "F#": 6, Gb: 6,
+      G: 7, "G#": 8, Ab: 8,
+      A: 9, "A#": 10, Bb: 10,
+      B: 11,
+    };
+
+    const keySemitone = noteToSemitone[key];
+
+    if (keySemitone === undefined) {
+      throw new Error(`Invalid key: ${key}`);
+    }
+
+    const possibleStartFrets: number[] = [];
+
+    for (const note of cagedNotes) {
+      if (note.interval !== "1") continue;
+
+      const tuningNote = stringTunings[note.string];
+      const tuningSemitone = noteToSemitone[tuningNote];
+
+      if (tuningSemitone === undefined) continue;
+
+      // We want:
+      // tuningSemitone + (startFret + note.fret) ≡ keySemitone mod 12
+      // => startFret ≡ (keySemitone - tuningSemitone - note.fret) mod 12
+      const rawFret = (keySemitone - tuningSemitone - note.fret + 12 * 2) % 12;
+
+      possibleStartFrets.push(rawFret);
+    }
+
+    if (possibleStartFrets.length === 0) return 0;
+
+    return Math.min(...possibleStartFrets);
+  }
+
   getScale(mode: string, position: string): CagedNote[] {
     switch (mode) {
       case "Major Scale":
@@ -566,8 +608,8 @@ export class CagePositionFinder {
           new CagedNote('2',0,1),
           new CagedNote('3',0,3),
           new CagedNote('4',0,4),
-          new CagedNote('5',1,4),
-          new CagedNote('6',1,5),
+          new CagedNote('5',1,1),
+          new CagedNote('6',1,4),
           new CagedNote('7',2,0),
           new CagedNote('1',2,1),
           new CagedNote('2',2,3),

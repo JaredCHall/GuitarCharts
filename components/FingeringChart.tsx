@@ -6,10 +6,10 @@ interface FingeringChartProps extends JSX.HTMLAttributes<HTMLDivElement> {
   showIntervals: boolean;
   mode: string;
   keyName: string;
-  startFret: number;
 }
 
 const cageFinder = new CagePositionFinder();
+
 
 const topOffset = 24; // Extra vertical space for fret numbers
 const strings = 6;
@@ -33,6 +33,7 @@ const silver = "#c0c0c0";
 export function FingeringChart(props: FingeringChartProps) {
 
   const cagedNotes = cageFinder.getScale(props.mode, props.position);
+  const startFret = cageFinder.getStartFret(props.position,props.keyName,cagedNotes)
 
 
   return (
@@ -52,6 +53,20 @@ export function FingeringChart(props: FingeringChartProps) {
               fill={ebony}
           ></rect>
 
+
+          {/* CAGED position label */}
+          <text
+              x={0}
+              y={14}
+              textAnchor="middle"
+              fontSize="20"
+              fontWeight="bold"
+              fill="white"
+              style={{ fontFamily: 'serif', letterSpacing: 1 }}
+          >
+            {props.position.charAt(0).toUpperCase()}
+          </text>
+
           {/* Draw fret numbers */}
           {Array.from({ length: frets }).map((_, i) => {
             const x = (i + 1) * fretSpacing;
@@ -65,7 +80,7 @@ export function FingeringChart(props: FingeringChartProps) {
                     fill="gray"
                     style={{ fontSize: 10 }}
                 >
-                  {props.startFret + i}
+                  {startFret + i}
                 </text>
             );
           })}
