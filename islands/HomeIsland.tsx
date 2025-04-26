@@ -4,9 +4,8 @@ import { FingeringChart } from "../components/FingeringChart.tsx";
 
 export default function HomeIsland() {
   const [selectedKey, setSelectedKey] = useState<string>("C");
-  const [mode, setMode] = useState<"scale" | "chord">("scale");
   const [showIntervals, setShowIntervals] = useState<boolean>(true);
-
+  const [scaleMode, setScaleMode] = useState("Major Scale");
   const cagedPositions = ["C", "A", "G", "E", "D"];
 
   return (
@@ -17,15 +16,20 @@ export default function HomeIsland() {
           <CircleOfFifths selectedKey={selectedKey} onKeySelect={setSelectedKey} />
 
           <div className="mt-6 space-y-4 w-full">
+
             <div className="flex flex-col items-start">
-              <label className="mb-1 font-semibold">Mode:</label>
+              <label className="mb-1 font-semibold">Scale:</label>
               <select
-                  value={mode}
-                  onChange={(e) => setMode((e.target as HTMLSelectElement).value as "scale" | "chord")}
+                  value={scaleMode}
+                  onChange={(e) => setScaleMode((e.target as HTMLSelectElement).value)}
                   className="w-full bg-gray-800 p-2 rounded shadow border border-gray-700"
               >
-                <option value="scale">Scale</option>
-                <option value="chord">Chord</option>
+                <option>Major Scale</option>
+                <option>Natural Minor</option>
+                <option>Major Pentatonic</option>
+                <option>Minor Pentatonic</option>
+                <option>Major Blues</option>
+                <option>Minor Blues</option>
               </select>
             </div>
 
@@ -47,8 +51,8 @@ export default function HomeIsland() {
               <FingeringChart
                   keyName={selectedKey}
                   position={position}
-                  mode={mode}
                   showIntervals={showIntervals}
+                  mode={scaleMode}
               />
             </div>
         ))}
