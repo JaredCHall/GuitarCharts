@@ -154,20 +154,20 @@ export class CagePositionFinder {
         ]
       case 'G':
         return [
-          new CagedNote('6',0,1),
-          new CagedNote('1',0,4),
-          new CagedNote('2',1,1),
-          new CagedNote('♭3',1,2),
-          new CagedNote('3',1,3),
-          new CagedNote('5',2,1),
-          new CagedNote('6',2,3),
-          new CagedNote('1',3,1),
-          new CagedNote('2',3,3),
-          new CagedNote('♭3',3,4),
-          new CagedNote('3',4,1),
-          new CagedNote('5',4,4),
-          new CagedNote('6',5,1),
-          new CagedNote('1',5,4),
+          new CagedNote('6',0,0),
+          new CagedNote('1',0,3),
+          new CagedNote('2',1,0),
+          new CagedNote('♭3',1,1),
+          new CagedNote('3',1,2),
+          new CagedNote('5',2,0),
+          new CagedNote('6',2,2),
+          new CagedNote('1',3,0),
+          new CagedNote('2',3,2),
+          new CagedNote('♭3',3,3),
+          new CagedNote('3',4,0),
+          new CagedNote('5',4,3),
+          new CagedNote('6',5,0),
+          new CagedNote('1',5,3),
         ]
       case 'E':
         return [
@@ -258,18 +258,18 @@ export class CagePositionFinder {
         ]
       case 'E':
         return [
-          new CagedNote('1',0,1),
-          new CagedNote('♭3',0,4),
-          new CagedNote('4',1,1),
-          new CagedNote('5',1,3),
-          new CagedNote('♭7',2,1),
-          new CagedNote('1',2,3),
-          new CagedNote('♭3',3,1),
-          new CagedNote('4',3,3),
-          new CagedNote('5',4,1),
-          new CagedNote('♭7',4,4),
-          new CagedNote('1',5,1),
-          new CagedNote('♭3',5,4),
+          new CagedNote('1',0,0),
+          new CagedNote('♭3',0,3),
+          new CagedNote('4',1,0),
+          new CagedNote('5',1,2),
+          new CagedNote('♭7',2,0),
+          new CagedNote('1',2,2),
+          new CagedNote('♭3',3,0),
+          new CagedNote('4',3,2),
+          new CagedNote('5',4,0),
+          new CagedNote('♭7',4,3),
+          new CagedNote('1',5,0),
+          new CagedNote('♭3',5,3),
         ]
       case 'D':
         return [

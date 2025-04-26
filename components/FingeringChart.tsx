@@ -49,8 +49,7 @@ export function FingeringChart(props: FingeringChartProps) {
               y={topOffset}
               height={paddedHeight}
               width={width}
-              fill="ebony"
-              fill-opacity={0.5}
+              fill={ebony}
           ></rect>
 
           {/* Draw fret numbers */}
@@ -121,7 +120,7 @@ export function FingeringChart(props: FingeringChartProps) {
                   />
                   {props.showIntervals && (
                       <text
-                          x={x - 3.5}
+                          x={x - 3.5 * note.interval.length}
                           y={y + 6}
                           textAnchor="middle"
                           fontSize="10"
