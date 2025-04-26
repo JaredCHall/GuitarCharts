@@ -62,7 +62,7 @@ export class NaturalMajor implements ScaleMode{
   delta(): CagedPosition {
     return [
       [null, '2', null, '3', '4'],
-      [null, '5', null, null, '6'],
+      [null, '5', null,  '6', null],
       ['7', '1', null, '2', null],
       ['3', '4', null, '5', null],
       [null, '6', null, '7', '1'],

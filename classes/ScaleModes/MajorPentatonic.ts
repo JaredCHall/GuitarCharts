@@ -33,7 +33,7 @@ export class MajorPentatonic implements ScaleMode {
       ['3', null, null, '5', null],
       ['6', null, null, '1', null],
       [null, '2', null, '3', null],
-      [null, '6', null, '6', null],
+      [null, '5', null, '6', null],
     ]
   }
 
@@ -62,7 +62,7 @@ export class MajorPentatonic implements ScaleMode {
   delta(): CagedPosition {
     return [
       [null, '2', null, '3', null],
-      [null, '5', null, null, '6'],
+      [null, '5', null, '6', null],
       [null, '1', null, '2', null],
       ['3', null, null, '5', null],
       [null, '6', null, null, '1'],

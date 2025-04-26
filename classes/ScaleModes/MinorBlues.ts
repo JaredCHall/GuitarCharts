@@ -39,12 +39,12 @@ export class MinorBlues implements ScaleMode {
 
   golf(): CagedPosition {
     return [
-      [null, null, '♭7', null, '1'],
+      [null, '♭7', null, '1', null],
       [null, '♭3', null, '4', '♭5'],
       ['5', null, null, '♭7', null],
       ['1', null, null, '♭3', null],
       [null, '4', '♭5', '5', null],
-      [null, null, '♭7', null, '1'],
+      [null, '♭7', null, '1', null],
     ]
   }
 

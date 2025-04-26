@@ -39,12 +39,12 @@ export class NaturalMinor implements ScaleMode {
 
   golf(): CagedPosition {
     return [
-      [null, null, '♭7', null, '1'],
+      [null, '♭7', null, '1', null],
       ['2', '♭3', null, '4', null],
       ['5', '♭6', null, '♭7', null],
       ['1', null, '2', '♭3', null],
       [null, '4', null, '5', '♭6'],
-      [null, null, '♭7', null, '1'],
+      [null, '♭7', null, '1', null],
     ]
   }
 
