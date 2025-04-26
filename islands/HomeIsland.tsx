@@ -53,6 +53,7 @@ export default function HomeIsland() {
                   position={position}
                   showIntervals={showIntervals}
                   mode={scaleMode}
+                  startFret={0}
               />
             </div>
         ))}

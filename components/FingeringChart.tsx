@@ -1,16 +1,17 @@
 import { JSX } from "preact";
-import {ScaleNoteFinder} from "../classes/ScaleNoteFinder.ts";
+import {CagePositionFinder} from "../classes/CagePositionFinder.ts";
 
 interface FingeringChartProps extends JSX.HTMLAttributes<HTMLDivElement> {
-  keyName: string;
   position: string;
   showIntervals: boolean;
   mode: string;
+  keyName: string;
+  startFret: number;
 }
 
+const cageFinder = new CagePositionFinder();
 
-const finder = new ScaleNoteFinder();
-
+const topOffset = 24; // Extra vertical space for fret numbers
 const strings = 6;
 const frets = 5;
 const width = 300;
@@ -31,23 +32,53 @@ const silver = "#c0c0c0";
 
 export function FingeringChart(props: FingeringChartProps) {
 
-  const frettedNotes = finder.findNotes(props.keyName,props.mode, props.position);
+  const cagedNotes = cageFinder.getScale(props.mode, props.position);
 
-  // Determine the baseline fret for this chart
-  const displayedFrets = frettedNotes.map(n => n.fret);
-  const minFret = Math.min(...displayedFrets);
 
   return (
-      <div className="flex flex-col items-center">
-        <svg width={width} height={paddedHeight} style={{ backgroundColor: ebony }}>
+        <svg
+            viewBox={`0 0 ${width} ${paddedHeight + topOffset}`}
+            preserveAspectRatio="xMidYMid meet"
+            className="w-full h-auto"
+        >
+
+          {/* Draw fretboard */}
+          <rect
+              key='fretboard'
+              x={0}
+              y={topOffset}
+              height={paddedHeight}
+              width={width}
+              fill="ebony"
+              fill-opacity={0.5}
+          ></rect>
+
+          {/* Draw fret numbers */}
+          {Array.from({ length: frets }).map((_, i) => {
+            const x = (i + 1) * fretSpacing;
+            const y = 18; // small padding above the fretboard
+            return (
+                <text
+                    key={"fret-number-" + i}
+                    x={x - fretSpacing / 2}
+                    y={y}
+                    textAnchor="middle"
+                    fill="gray"
+                    style={{ fontSize: 10 }}
+                >
+                  {props.startFret + i}
+                </text>
+            );
+          })}
+
           {/* Draw frets */}
           {Array.from({ length: frets + 1 }).map((_, i) => (
               <line
                   key={"fret-" + i}
                   x1={i * fretSpacing}
-                  y1={0}
+                  y1={topOffset}
                   x2={i * fretSpacing}
-                  y2={paddedHeight}
+                  y2={paddedHeight + topOffset}
                   stroke={silver}
                   strokeWidth={i === 0 ? 4 : 2}
               />
@@ -56,7 +87,7 @@ export function FingeringChart(props: FingeringChartProps) {
           {/* Draw strings (flipped: low E at bottom) */}
           {Array.from({ length: strings }).map((_, i) => {
             const flippedIndex = strings - 1 - i;
-            const y = i * stringSpacing + verticalPadding;
+            const y = i * stringSpacing + verticalPadding + topOffset;
             return (
                 <line
                     key={"string-" + i}
@@ -72,9 +103,9 @@ export function FingeringChart(props: FingeringChartProps) {
           })}
 
           {/* Draw note markers */}
-          {frettedNotes.map((note, i) => {
-            const y = (strings - 1 - note.string) * stringSpacing + verticalPadding;
-            const x = (note.fret - minFret) * fretSpacing + fretSpacing / 2;
+          {cagedNotes.map((note, i) => {
+            const y = (strings - 1 - note.string) * stringSpacing + verticalPadding + topOffset;
+            const x = (note.fret) * fretSpacing + fretSpacing / 2;
             const isRoot = note.interval === "1";
             const fillColor = isRoot ? "red" : "yellow";
 
@@ -104,13 +135,5 @@ export function FingeringChart(props: FingeringChartProps) {
             );
           })}
         </svg>
-
-        <div className="mt-2 text-sm text-center">
-          <p><strong>Key:</strong> {props.keyName}</p>
-          <p><strong>Position:</strong> {props.position}</p>
-          <p><strong>Mode:</strong> {props.mode}</p>
-          <p><strong>Show Intervals:</strong> {props.showIntervals ? "Yes" : "No"}</p>
-        </div>
-      </div>
   );
 }
