@@ -4,7 +4,7 @@ import { FingeringChart } from "../components/FingeringChart.tsx";
 
 export default function HomeIsland() {
   const [selectedKey, setSelectedKey] = useState<string>("C");
-  const [showIntervals, setShowIntervals] = useState<boolean>(true);
+  const [labelMode, setLabelMode] = useState<"none" | "intervals" | "notes">("none");
   const [scaleMode, setScaleMode] = useState("Major Scale");
   const cagedPositions = ["C", "A", "G", "E", "D"];
 
@@ -13,7 +13,12 @@ export default function HomeIsland() {
 
         {/* Tile 1: Navigation & Controls */}
         <div className="flex flex-col items-center justify-center bg-gray-950 p-4 border border-gray-800">
-          <CircleOfFifths selectedKey={selectedKey} onKeySelect={setSelectedKey} />
+          <CircleOfFifths
+              selectedKey={selectedKey}
+              onKeySelect={setSelectedKey}
+              selectedLabelMode={labelMode}
+              onLabelModeSelect={setLabelMode}
+          />
 
           <div className="mt-6 space-y-4 w-full">
 
@@ -32,16 +37,6 @@ export default function HomeIsland() {
                 <option>Minor Blues</option>
               </select>
             </div>
-
-            <div className="flex items-center">
-              <input
-                  type="checkbox"
-                  checked={showIntervals}
-                  onChange={() => setShowIntervals(!showIntervals)}
-                  className="form-checkbox text-amber-500 mr-2"
-              />
-              <span>Show Intervals</span>
-            </div>
           </div>
         </div>
 
@@ -51,12 +46,11 @@ export default function HomeIsland() {
               <FingeringChart
                   keyName={selectedKey}
                   position={position}
-                  showIntervals={showIntervals}
                   mode={scaleMode}
+                  labelMode={labelMode}
               />
             </div>
         ))}
-
       </div>
   );
 }

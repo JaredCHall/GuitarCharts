@@ -3,9 +3,9 @@ import {CagePositionFinder} from "../classes/CagePositionFinder.ts";
 
 interface FingeringChartProps extends JSX.HTMLAttributes<HTMLDivElement> {
   position: string;
-  showIntervals: boolean;
   mode: string;
   keyName: string;
+  labelMode: "none" | "intervals" | "notes"
 }
 
 const cageFinder = new CagePositionFinder();
@@ -133,7 +133,7 @@ export function FingeringChart(props: FingeringChartProps) {
                       stroke="black"
                       strokeWidth={1.5}
                   />
-                  {props.showIntervals && (
+                  {props.labelMode === "intervals" && (
                       <text
                           x={x - 3.5 * note.interval.length}
                           y={y + 6}
