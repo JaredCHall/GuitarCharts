@@ -1,0 +1,35 @@
+{
+  "build_id": "c722254113c279c7e52dcd4be3c4b835c5cb3494",
+  "files": {
+    "main.js": [
+      "chunk-GI7LLYGM.js",
+      "chunk-JP5XG2OT.js"
+    ],
+    "deserializer.js": [],
+    "signals.js": [
+      "chunk-GI7LLYGM.js",
+      "chunk-GPMBDFQC.js",
+      "chunk-JP5XG2OT.js"
+    ],
+    "chunk-GI7LLYGM.js": [],
+    "island-circleoffifths.js": [
+      "chunk-GMILD7TZ.js",
+      "chunk-GPMBDFQC.js",
+      "chunk-JP5XG2OT.js"
+    ],
+    "island-homeisland.js": [
+      "chunk-GMILD7TZ.js",
+      "chunk-GPMBDFQC.js",
+      "chunk-JP5XG2OT.js"
+    ],
+    "chunk-GMILD7TZ.js": [
+      "chunk-GPMBDFQC.js",
+      "chunk-JP5XG2OT.js"
+    ],
+    "chunk-GPMBDFQC.js": [
+      "chunk-JP5XG2OT.js"
+    ],
+    "chunk-JP5XG2OT.js": [],
+    "metafile.json": []
+  }
+}
