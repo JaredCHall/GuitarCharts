@@ -20,8 +20,6 @@ const keys: Key[] = [
   { major: "E", minor: "c#" },
   { major: "B", minor: "g#" },
   { major: "F#", minor: "d#" },
-  { major: "C♭", minor: "a♭" },
-  { major: "G♭", minor: "e♭" },
   { major: "D♭", minor: "b♭" },
   { major: "A♭", minor: "f" },
   { major: "E♭", minor: "c" },

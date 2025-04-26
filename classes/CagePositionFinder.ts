@@ -1,44 +1,48 @@
 import {CagedNote} from "$classes/CagedNote.ts";
 import {ScaleMode} from "$classes/ScaleModes/ScaleModeInterface.ts";
-import {NaturalMajor} from "./ScaleModes/NaturalMajor.ts";
-import {NaturalMinor} from "./ScaleModes/NaturalMinor.ts";
+import {NaturalMajor} from "$classes/ScaleModes/NaturalMajor.ts";
+import {NaturalMinor} from "$classes/ScaleModes/NaturalMinor.ts";
 import {MajorPentatonic} from "$classes/ScaleModes/MajorPentatonic.ts";
 import {MinorPentatonic} from "$classes/ScaleModes/MinorPentatonic.ts";
 import {MajorBlues} from "$classes/ScaleModes/MajorBlues.ts";
 import {MinorBlues} from "$classes/ScaleModes/MinorBlues.ts";
-import {CagedPosition, chromaticFlats, chromaticSharps} from "$classes/types.ts";
+import {CagedPosition} from "$classes/types.ts";
 
 export class CagePositionFinder {
 
   scales = {
-    naturalMajor: new NaturalMinor(),
-    naturalMinor: new NaturalMajor(),
+    naturalMajor: new NaturalMajor(),
+    naturalMinor: new NaturalMinor(),
     majorPentatonic: new MajorPentatonic(),
     majorBlues: new MajorBlues(),
     minorPentatonic: new MinorPentatonic(),
     minorBlues: new MinorBlues(),
   }
 
-  getNoteSemitoneRelativeToC(note: string): number
-  {
-      switch(note){
-        case 'C': return 0;
-        case 'C♯': case 'D♭': return 1;
-        case 'D': return 2;
-        case 'D♯': case 'E♭': return 3;
-        case 'E': return 4;
-        case 'F': return 5;
-        case 'F♯': case 'G♭': return 6;
-        case 'G': return 7;
-        case 'G♯': case 'A♭': return 8;
-        case 'A': return 9;
-        case 'A♯': case 'B♭': return 10;
-        case 'B': return 11;
-        default: throw new Error('Unrecognized note: ' + note);
-      }
+  semitonesRelativeToC: Record<string, number> = {
+    'C': 0,
+    'C♯': 1, 'D♭': 1,
+    'D': 2,
+    'D♯': 3, 'E♭': 3,
+    'E': 4,
+    'F': 5,
+    'F♯': 6, 'G♭': 6,
+    'G': 7,
+    'G♯': 8, 'A♭': 8,
+    'A': 9,
+    'A♯': 10, 'B♭': 10,
+    'B': 11,
   }
 
-
+  getNoteSemitoneRelativeToC(note: string): number
+  {
+    const semitones = this.semitonesRelativeToC[note];
+    if(semitones === undefined)
+    {
+      throw new Error('Unrecognized note: '+ note)
+    }
+    return semitones;
+  }
 
   getStartFret(key: string, cagedNotes: CagedNote[]): number {
     const stringTunings = ["E", "A", "D", "G", "B", "E"]; // Standard tuning
@@ -131,58 +135,4 @@ export class CagePositionFinder {
 
     return notes;
   }
-
-  private getNotesForKey(key: string, scaleType: string)
-  {
-    switch(scaleType) {
-      case 'major':
-        return this.getChromaticNotesForMajorKey(key)
-      default:
-        return this.getChromaticNotesForMinorKey(key)
-    }
-
-  }
-  private getChromaticNotesForMajorKey(key: string): string[] {
-
-    switch(key){
-      case 'C': case 'G': case 'D': case 'A': case 'E': case 'B': case 'F♯': return chromaticSharps
-      default: return chromaticFlats;
-    }
-  }
-  private getChromaticNotesForMinorKey(key: string): string[] {
-
-    switch(key){
-      case 'A': case 'E': case 'B': case 'F♯': case 'C♯': case 'G♯': case 'D♯': return chromaticSharps
-      default: return chromaticFlats;
-    }
-  }
-
-
-  public buildScale(scaleKey: string, scaleMode: string): string[] {
-
-    const mode =this.getScaleMode(scaleMode);
-    const pattern = mode.pattern()
-    const notesInKey = this.getNotesForKey(scaleKey, scaleMode);
-
-    const startIndex = chromaticSharps.indexOf(scaleKey);
-    if (startIndex === -1) {
-      throw new Error(`Unknown starting key: ${scaleKey}`);
-    }
-
-    const notes: string[] = [];
-    let currentIndex = startIndex;
-
-    notes.push(notesInKey[currentIndex]); // Start with the root note
-
-    for (const step of pattern) {
-      currentIndex = (currentIndex + step) % 12;
-      notes.push(notesInKey[currentIndex]);
-    }
-
-    return notes;
-  }
-
-
-
-
 }

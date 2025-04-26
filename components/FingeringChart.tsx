@@ -1,5 +1,6 @@
 import { JSX } from "preact";
 import {CagePositionFinder} from "../classes/CagePositionFinder.ts";
+import {NoteFinder} from "../classes/NoteFinder.ts";
 
 interface FingeringChartProps extends JSX.HTMLAttributes<HTMLDivElement> {
   position: string;
@@ -9,6 +10,7 @@ interface FingeringChartProps extends JSX.HTMLAttributes<HTMLDivElement> {
 }
 
 const cageFinder = new CagePositionFinder();
+const noteFinder = new NoteFinder();
 
 const topOffset = 24; // Extra vertical space for fret numbers
 const strings = 6;
@@ -32,10 +34,8 @@ const silver = "#c0c0c0";
 export function FingeringChart(props: FingeringChartProps) {
 
   const cagedNotes = cageFinder.getScale(props.mode, props.position);
-  const scaleNotes = cageFinder.buildScale(props.keyName, props.mode)
+  const scaleNotes = noteFinder.getKeyIntervals(props.keyName, props.mode)
   const startFret = cageFinder.getStartFret(props.keyName, cagedNotes)
-
-  console.log(props.labelMode);
 
   return (
         <svg
@@ -157,7 +157,7 @@ export function FingeringChart(props: FingeringChartProps) {
                           textAnchor="middle"
                           dominantBaseline="middle"
                       >
-                        {scaleNotes[note.getIntervalIndex()]}
+                        {scaleNotes[note.interval]}
                       </text>
                   )}
                 </g>
