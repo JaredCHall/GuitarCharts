@@ -28,20 +28,24 @@ const CircleOfFifths = () => {
   const angleStep = (2 * Math.PI) / keys.length;
 
   return (
-      <svg width="300" height="300" viewBox="0 0 300 300">
-        <circle cx={center} cy={center} r={radius} fill="none" stroke="#ccc" stroke-width="2" />
+      <svg width="300" height="300" viewBox="0 0 300 300" class="mx-auto">
+        <circle cx={center} cy={center} r={radius} fill="none" stroke="#444" stroke-width="2" />
+
         {keys.map((key, i) => {
           const angle = angleStep * i - Math.PI / 2;
           const xOuter = center + radius * Math.cos(angle);
           const yOuter = center + radius * Math.sin(angle);
           const xInner = center + (radius - 30) * Math.cos(angle);
           const yInner = center + (radius - 30) * Math.sin(angle);
+
           return (
               <g key={i}>
-                <text x={xOuter} y={yOuter} text-anchor="middle" dominant-baseline="middle" fill="#fff" font-size="14">
+                <circle cx={xOuter} cy={yOuter} r={16} fill="#111827" stroke="#6b7280" stroke-width="2" />
+                <text x={xOuter} y={yOuter + 1} text-anchor="middle" dominant-baseline="middle" fill="#f3f4f6" font-size="12" font-weight="bold">
                   {key.major}
                 </text>
-                <text x={xInner} y={yInner} text-anchor="middle" dominant-baseline="middle" fill="#aaa" font-size="10">
+
+                <text x={xInner} y={yInner} text-anchor="middle" dominant-baseline="middle" fill="#9ca3af" font-size="10">
                   {key.minor}
                 </text>
               </g>
